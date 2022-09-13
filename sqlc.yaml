@@ -1,0 +1,7 @@
+version: "1"
+packages:
+  - path: db
+    name: db
+    engine: mysql
+    schema: 'db/schema/schema.sql'
+    queries: 'db/query/query.sql'
