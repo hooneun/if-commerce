@@ -1,27 +1,17 @@
-package main
+package server
 
 import (
-	"log"
 	"net/http"
 
-	"github.com/hooneun/if-commerce/config"
 	"github.com/hooneun/if-commerce/handler"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
-func main() {
-	err := config.InitConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Fatal(RunAPI(":1323"))
-}
-
 func RunAPI(address string) error {
 	e := echo.New()
 	e.Use(middleware.Logger())
+	e.Use(middleware.JWTWithConfig(GetJWTConfig()))
 
 	h, err := handler.NewHandler()
 	if err != nil {

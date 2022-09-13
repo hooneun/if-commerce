@@ -19,8 +19,8 @@ INSERT INTO users (
 `
 
 type CreateUserParams struct {
-	Email    string
-	Password string
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (sql.Result, error) {
