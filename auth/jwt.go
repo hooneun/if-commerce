@@ -11,8 +11,16 @@ type JWTTokenRequest struct {
 }
 
 type JWTToken struct {
-	AccessToken  string
-	RefreshToken string
+	AccessToken  string `json:"access_token"`
+	RefreshToken string `json:"refresh_token"`
+}
+
+func NewRequest(id int64, exp int64, key string) *JWTTokenRequest {
+	return &JWTTokenRequest{
+		UniqueID: id,
+		Exp:      exp,
+		Key:      key,
+	}
 }
 
 func MakeJWTToken(t JWTTokenRequest) (string, error) {

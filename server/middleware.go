@@ -9,9 +9,9 @@ import (
 
 func GetJWTConfig() middleware.JWTConfig {
 	return middleware.JWTConfig{
-		SigningKey: os.Getenv("JWT_KEY"),
+		SigningKey: []byte(os.Getenv("JWT_ACCESS_KEY")),
 		Skipper: func(c echo.Context) bool {
-			if c.Path() == "/auth/login" || c.Path() == "/auth/signup" {
+			if c.Path() == "/auth/login" || c.Path() == "/auth/signup" || c.Path() == "/" {
 				return true
 			}
 
