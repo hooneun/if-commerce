@@ -1,13 +1,20 @@
 package auth
 
 import (
-	"github.com/golang-jwt/jwt"
+	"time"
+
+	"github.com/golang-jwt/jwt/v4"
 )
 
 type JWTTokenRequest struct {
-	UniqueID int64
-	Exp      int64
-	Key      string
+	ID  int64
+	Exp time.Time
+	Key string
+}
+
+type UserClaim struct {
+	jwt.RegisteredClaims
+	ID int64 `json:"id"`
 }
 
 type JWTToken struct {
@@ -15,18 +22,21 @@ type JWTToken struct {
 	RefreshToken string `json:"refresh_token"`
 }
 
-func NewRequest(id int64, exp int64, key string) *JWTTokenRequest {
+func NewRequest(id int64, exp time.Time, key string) *JWTTokenRequest {
 	return &JWTTokenRequest{
-		UniqueID: id,
-		Exp:      exp,
-		Key:      key,
+		ID:  id,
+		Exp: exp,
+		Key: key,
 	}
 }
 
-func MakeJWTToken(t JWTTokenRequest) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":  t.UniqueID,
-		"exp": t.Exp,
+func CreateJWTToken(t JWTTokenRequest) (string, error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, UserClaim{
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(t.Exp),
+			IssuedAt:  jwt.NewNumericDate(time.Now()),
+		},
+		ID: t.ID,
 	})
 
 	tokenStr, err := token.SignedString([]byte(t.Key))

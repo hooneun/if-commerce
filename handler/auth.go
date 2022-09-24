@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 	"strconv"
@@ -48,6 +47,10 @@ func (h *Handler) Signup(c echo.Context) error {
 	return c.JSON(http.StatusOK, "Signup")
 }
 
+// func (h *Handler) Me(c echo.Context) error {
+
+// }
+
 func getTokenByUniqueID(uniqueID int64) (*auth.JWTToken, error) {
 	jwt := new(auth.JWTToken)
 
@@ -59,24 +62,23 @@ func getTokenByUniqueID(uniqueID int64) (*auth.JWTToken, error) {
 	if err != nil {
 		return jwt, err
 	}
-	access = time.Now().Add(time.Minute * time.Duration(access)).Unix()
-	fmt.Println(access)
+	accessTime := time.Now().Add(time.Minute * time.Duration(access))
 
 	refreshMin := os.Getenv("JWT_REFRESH_EXP_MIN")
 	refresh, err := strconv.ParseInt(refreshMin, 10, 64)
 	if err != nil {
 		return jwt, err
 	}
-	refresh = time.Now().Add(time.Minute * time.Duration(refresh)).Unix()
+	refreshTime := time.Now().Add(time.Minute * time.Duration(refresh))
 
-	accessData := auth.NewRequest(uniqueID, access, accessKey)
-	refreshData := auth.NewRequest(uniqueID, refresh, refreshKey)
+	accessData := auth.NewRequest(uniqueID, accessTime, accessKey)
+	refreshData := auth.NewRequest(uniqueID, refreshTime, refreshKey)
 
-	accessToken, err := auth.MakeJWTToken(*accessData)
+	accessToken, err := auth.CreateJWTToken(*accessData)
 	if err != nil {
 		return jwt, err
 	}
-	refreshToken, err := auth.MakeJWTToken(*refreshData)
+	refreshToken, err := auth.CreateJWTToken(*refreshData)
 	if err != nil {
 		return jwt, err
 	}

@@ -23,6 +23,7 @@ func RunAPI(address string) error {
 	auth := e.Group("/auth")
 	auth.POST("/login", h.Login)
 	auth.POST("/signup", h.Signup)
+	auth.GET("/me", h.Me)
 
 	user := e.Group("/users")
 	user.GET("", func(c echo.Context) error {
