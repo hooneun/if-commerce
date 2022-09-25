@@ -9,10 +9,110 @@ import (
 	"time"
 )
 
+type Item struct {
+	ID       int64  `json:"id"`
+	Name     string `json:"name"`
+	Quantity int32  `json:"quantity"`
+	Price    int32  `json:"price"`
+	// MAIN, OPTION
+	Type      string       `json:"type"`
+	CreatedAt time.Time    `json:"created_at"`
+	UpdatedAt sql.NullTime `json:"updated_at"`
+}
+
+type ItemProduct struct {
+	ID        int64        `json:"id"`
+	ItemID    int64        `json:"item_id"`
+	ProductID int64        `json:"product_id"`
+	Price     int32        `json:"price"`
+	CreatedAt time.Time    `json:"created_at"`
+	UpdatedAt sql.NullTime `json:"updated_at"`
+}
+
+type Order struct {
+	ID             int64        `json:"id"`
+	Name           string       `json:"name"`
+	UserID         int64        `json:"user_id"`
+	UserAddressID  int64        `json:"user_address_id"`
+	Status         string       `json:"status"`
+	ProductAmount  int32        `json:"product_amount"`
+	DeliveryAmount int32        `json:"delivery_amount"`
+	TotalAmount    int32        `json:"total_amount"`
+	CreatedAt      time.Time    `json:"created_at"`
+	UpdatedAt      sql.NullTime `json:"updated_at"`
+}
+
+type OrderProduct struct {
+	ID           int64        `json:"id"`
+	UserID       int64        `json:"user_id"`
+	OrderID      int64        `json:"order_id"`
+	ProductID    int64        `json:"product_id"`
+	Name         string       `json:"name"`
+	Status       string       `json:"status"`
+	DeliveryDate time.Time    `json:"delivery_date"`
+	Amount       int32        `json:"amount"`
+	CreatedAt    time.Time    `json:"created_at"`
+	UpdatedAt    sql.NullTime `json:"updated_at"`
+}
+
+type Payment struct {
+	ID             int64        `json:"id"`
+	UserID         int64        `json:"user_id"`
+	OrderID        int64        `json:"order_id"`
+	ProductAmount  int32        `json:"product_amount"`
+	DeliveryAmount int32        `json:"delivery_amount"`
+	TotalAmount    int32        `json:"total_amount"`
+	CreatedAt      time.Time    `json:"created_at"`
+	UpdatedAt      sql.NullTime `json:"updated_at"`
+}
+
+type Point struct {
+	ID     int64 `json:"id"`
+	UserID int64 `json:"user_id"`
+	Point  int32 `json:"point"`
+}
+
+type PointTransaction struct {
+	ID        int64        `json:"id"`
+	PointID   int64        `json:"point_id"`
+	Title     string       `json:"title"`
+	Point     int32        `json:"point"`
+	CreatedAt time.Time    `json:"created_at"`
+	UpdatedAt sql.NullTime `json:"updated_at"`
+}
+
+type Product struct {
+	ID            int64        `json:"id"`
+	ItemProductID int64        `json:"item_product_id"`
+	Name          string       `json:"name"`
+	Thumbnail     string       `json:"thumbnail"`
+	Detail        string       `json:"detail"`
+	CreatedAt     time.Time    `json:"created_at"`
+	UpdatedAt     sql.NullTime `json:"updated_at"`
+}
+
+type ProductComment struct {
+	ID        int64        `json:"id"`
+	UserID    int64        `json:"user_id"`
+	ProductID int64        `json:"product_id"`
+	Content   string       `json:"content"`
+	Score     int32        `json:"score"`
+	CreatedAt time.Time    `json:"created_at"`
+	UpdatedAt sql.NullTime `json:"updated_at"`
+}
+
 type User struct {
 	ID        int64        `json:"id"`
 	Email     string       `json:"email"`
 	Password  string       `json:"password"`
 	CreatedAt time.Time    `json:"created_at"`
 	UpdatedAt sql.NullTime `json:"updated_at"`
+	DeletedAt sql.NullTime `json:"deleted_at"`
+}
+
+type UserAddress struct {
+	ID      int64  `json:"id"`
+	UserID  int64  `json:"user_id"`
+	Address string `json:"address"`
+	Detail  string `json:"detail"`
 }
