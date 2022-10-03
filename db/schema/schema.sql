@@ -115,7 +115,6 @@ CREATE TABLE items (
   name VARCHAR(100) NOT NULL,
   quantity INT NOT NULL DEFAULT 0,
   price INT NOT NULL DEFAULT 0,
-  type VARCHAR(20) NOT NULL COMMENT 'MAIN, OPTION',
   created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp NULL
 );
@@ -125,6 +124,7 @@ CREATE TABLE item_product(
   item_id BIGINT NOT NULL,
   product_id BIGINT NOT NULL,
   price INT NOT NULL,
+  type VARCHAR(20) NOT NULL COMMENT 'MAIN, OPTION',
   created_at timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated_at timestamp NULL,
 

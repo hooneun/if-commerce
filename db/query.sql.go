@@ -10,6 +10,24 @@ import (
 	"database/sql"
 )
 
+const createItem = `-- name: CreateItem :execresult
+INSERT INTO items (
+  name, quantity, price
+) VALUES (
+  ?, ?, ?
+)
+`
+
+type CreateItemParams struct {
+	Name     string `json:"name"`
+	Quantity int32  `json:"quantity"`
+	Price    int32  `json:"price"`
+}
+
+func (q *Queries) CreateItem(ctx context.Context, arg CreateItemParams) (sql.Result, error) {
+	return q.db.ExecContext(ctx, createItem, arg.Name, arg.Quantity, arg.Price)
+}
+
 const createUser = `-- name: CreateUser :execresult
 INSERT INTO users (
   email, password
@@ -25,6 +43,25 @@ type CreateUserParams struct {
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (sql.Result, error) {
 	return q.db.ExecContext(ctx, createUser, arg.Email, arg.Password)
+}
+
+const getItemByID = `-- name: GetItemByID :one
+SELECT id, name, quantity, price, created_at, updated_at FROM items
+WHERE id = ? LIMIT 1
+`
+
+func (q *Queries) GetItemByID(ctx context.Context, id int64) (Item, error) {
+	row := q.db.QueryRowContext(ctx, getItemByID, id)
+	var i Item
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.Quantity,
+		&i.Price,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
 }
 
 const getUserByEmail = `-- name: GetUserByEmail :one

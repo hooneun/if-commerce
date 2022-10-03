@@ -10,21 +10,21 @@ import (
 )
 
 type Item struct {
-	ID       int64  `json:"id"`
-	Name     string `json:"name"`
-	Quantity int32  `json:"quantity"`
-	Price    int32  `json:"price"`
-	// MAIN, OPTION
-	Type      string       `json:"type"`
+	ID        int64        `json:"id"`
+	Name      string       `json:"name"`
+	Quantity  int32        `json:"quantity"`
+	Price     int32        `json:"price"`
 	CreatedAt time.Time    `json:"created_at"`
 	UpdatedAt sql.NullTime `json:"updated_at"`
 }
 
 type ItemProduct struct {
-	ID        int64        `json:"id"`
-	ItemID    int64        `json:"item_id"`
-	ProductID int64        `json:"product_id"`
-	Price     int32        `json:"price"`
+	ID        int64 `json:"id"`
+	ItemID    int64 `json:"item_id"`
+	ProductID int64 `json:"product_id"`
+	Price     int32 `json:"price"`
+	// MAIN, OPTION
+	Type      string       `json:"type"`
 	CreatedAt time.Time    `json:"created_at"`
 	UpdatedAt sql.NullTime `json:"updated_at"`
 }
